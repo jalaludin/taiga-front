@@ -345,6 +345,27 @@ Medium = ($translate, $confirm, $storage, wysiwygService, animationFrame, tgLoad
             mediumInstance.subscribe 'editableDrop', (event) ->
                 $scope.onUploadFile({files: event.dataTransfer.files, cb: uploadEnd})
 
+            editorMedium.on 'keydown', (e) ->
+                code = if e.keyCode then e.keyCode else e.which
+                range = MediumEditor.selection.getSelectionRange(document)
+                codeBlock = isCodeBlockSelected(range, document)
+                selection = window.getSelection()
+
+                if code == 13 && e.shiftKey && codeBlock
+                    e.preventDefault()
+                    document.execCommand('insertHTML', false, '\n\n')
+                else if code == 13 && selection.focusOffset == _.trimEnd(selection.focusNode.textContent).length
+                    e.preventDefault()
+                    document.execCommand('insertHTML', false, '<p id="last-p"><br/></p>')
+
+                    lastP = $('#last-p').attr('id', '')
+
+                    range = document.createRange()
+                    range.selectNodeContents(lastP[0])
+                    range.collapse(true);
+
+                    MediumEditor.selection.selectRange(document, range)
+
             mediumInstance.subscribe 'editableKeydown', (e) ->
                 code = if e.keyCode then e.keyCode else e.which
 

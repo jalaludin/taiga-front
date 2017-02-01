@@ -63,8 +63,9 @@ class WysiwygCodeHightlighterService
                             languageClass = _.find code.classList, (className) ->
                                 return className && className.indexOf('language-') != -1
 
-                            code.classList.remove(languageClass.replace('language-', ''))
-                            code.classList.remove(languageClass)
+                            if languageClass
+                                code.classList.remove(languageClass.replace('language-', ''))
+                                code.classList.remove(languageClass)
 
                             code.classList.add('language-' + lan)
                             code.classList.add(lan)
