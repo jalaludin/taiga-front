@@ -47,6 +47,7 @@ class WysiwygCodeHightlighterService
                 code.classList.add('has-code-lan-selector') # prevent multi instanciate
 
                 currentLan = @.getLanguageInClassList(code.classList)
+                code.parentNode.classList.add('language-' + currentLan)
 
                 id = new Date().getTime()
 
@@ -73,7 +74,6 @@ class WysiwygCodeHightlighterService
                 document.body.appendChild(tab)
 
                 code.dataset.tab = tab
-
 
                 if !code.dataset.tabId
                     code.dataset.tabId = id
